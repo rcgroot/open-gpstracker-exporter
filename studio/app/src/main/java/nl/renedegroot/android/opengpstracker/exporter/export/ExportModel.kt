@@ -30,12 +30,16 @@
 
 package nl.renedegroot.android.opengpstracker.exporter.export
 
+import nl.renedegroot.android.opengpstracker.exporter.exporting.ExporterManager
+
 /**
  * Progress and total of the export
  */
-class ExportModel {
-    var completedTracks = 0
-    var totalTracks = 0
-    var totalWaypoints = 0
-    var completedWaypoints = 0
+class ExportModel : ExporterManager.ProgressListener {
+
+    override var isRunning = false
+    override var completedTracks = 0
+    override var totalTracks = 0
+    override var totalWaypoints = 0
+    override var completedWaypoints = 0
 }

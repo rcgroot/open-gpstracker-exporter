@@ -35,7 +35,7 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentExportBinding
-import nl.sogeti.android.log.Log
+import nl.renedegroot.android.opengpstracker.exporter.exporting.ExporterManager
 
 /**
  * Show progress of the export, with cancel options
@@ -57,8 +57,18 @@ class ExportFragment : DialogFragment() {
         return builder.create();
     }
 
+    override fun onResume() {
+        super.onResume()
+        ExporterManager.addListener(model)
+    }
+
+    override fun onPause() {
+        ExporterManager.removeListener(model)
+        super.onPause()
+    }
+
     fun stopExport() {
-        Log.d(this, "TODO interrupt export")
+        ExporterManager.stopExport()
         dismiss()
     }
 }

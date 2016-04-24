@@ -38,7 +38,7 @@ import android.view.ViewGroup
 import nl.renedegroot.android.opengpstracker.exporter.R
 import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentPrepareBinding
 import nl.renedegroot.android.opengpstracker.exporter.export.ExportFragment
-import nl.sogeti.android.log.Log
+import nl.renedegroot.android.opengpstracker.exporter.exporting.ExporterManager
 
 /**
  * A placeholder fragment containing a simple view.
@@ -58,7 +58,7 @@ class PrepareFragment : Fragment(), PrepareHandlers.Listener {
     }
 
     override fun startExport() {
-        Log.d(this, "TODO kick off export")
+        ExporterManager.startExport(activity)
         ExportFragment().show(fragmentManager, "EXPORT")
     }
 }
