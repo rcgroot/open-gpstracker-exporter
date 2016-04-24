@@ -33,10 +33,6 @@
     <data>
 
         <variable
-            name="handlers"
-            type="nl.renedegroot.android.opengpstracker.exporter.about.AboutHandlers" />
-
-        <variable
             name="model"
             type="nl.renedegroot.android.opengpstracker.exporter.about.AboutModel" />
     </data>
@@ -51,7 +47,8 @@
             android:id="@+id/fragment_about_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:text="@{@string/about_version(model.version, model.gitHash, model.buildNumber)}" />
 
         <WebView
@@ -61,12 +58,5 @@
             android:layout_weight="1"
             app:url="@{model.url}" />
 
-        <Button
-            android:id="@+id/fragment_about_button_ok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="@{handlers.onOkay}"
-            android:text="@android:string/ok" />
     </LinearLayout>
 </layout>

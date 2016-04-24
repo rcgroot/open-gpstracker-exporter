@@ -33,8 +33,12 @@
     <data>
 
         <variable
+            name="handlers"
+            type="nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareHandlers" />
+
+        <variable
             name="model"
-            type="nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareExportModel" />
+            type="nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareModel" />
     </data>
 
     <RelativeLayout
@@ -44,7 +48,7 @@
         android:paddingLeft="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_vertical_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".prepare.PrepareExportFragment">
+        tools:context=".prepare.PrepareFragment">
 
         <TextView
             android:id="@+id/fragment_export_explained"
@@ -77,6 +81,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignRight="@+id/fragment_export_explained"
+            android:onClick="@{handlers.onStart}"
             android:text="Start export" />
 
 

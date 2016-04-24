@@ -27,11 +27,25 @@
  *  *
  *
  */
-package nl.renedegroot.android.opengpstracker.exporter.prepare
+package nl.renedegroot.android.opengpstracker.exporter.prepare;
+
+import android.view.View;
 
 /**
- * View model for the export preparation fragment
+ * Listen to View events and dispatch them as logical call to the listener
  */
-class PrepareExportModel {
-    var areImagesIncluded = true;
+public class PrepareHandlers {
+    final Listener listener;
+
+    public PrepareHandlers(Listener listener) {
+        this.listener = listener;
+    }
+
+    public void onStart(View view) {
+        listener.startExport();
+    }
+
+    interface Listener {
+        void startExport();
+    }
 }

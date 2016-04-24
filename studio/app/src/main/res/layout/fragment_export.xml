@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
    /* *****************************************************************************
     **    Author: René de Groot
     ** Copyright: (c) 2016 René de Groot All Rights Reserved.
@@ -27,12 +27,36 @@
     *
     */
 -->
-<resources>
-    <string name="app_name">Open GPS Tracker - Exporter</string>
-    <string name="app_name_short">OGT Exporter</string>
-    <string name="action_about">About</string>
-    <string name="about_version">Version %1$s (%2$s, build %3$d)</string>
-    <string name="export_prepare_also_images">Included images in tracks export.</string>
-    <string name="export_progress_tracks">Tracks: %1$d out of %2$d</string>
-    <string name="export_progress_waypoints">Waypoints: %1$d out of %2$d</string>
-</resources>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="model"
+            type="nl.renedegroot.android.opengpstracker.exporter.export.ExportModel" />
+    </data>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/fragment_export__progress_tracks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/export_progress_tracks(model.completedTracks, model.totalTracks)}" />
+
+        <TextView
+            android:id="@+id/fragment_export__progress_waypoints"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/export_progress_waypoints(model.completedWaypoints, model.totalWaypoints)}" />
+
+    </LinearLayout>
+</layout>

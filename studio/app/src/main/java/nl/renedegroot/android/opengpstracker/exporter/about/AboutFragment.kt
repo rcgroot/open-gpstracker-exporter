@@ -27,31 +27,33 @@
  */
 package nl.renedegroot.android.opengpstracker.exporter.about
 
+import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.app.AlertDialog
 import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentAboutBinding
 
 /**
  * Show a little HTML with licenses and version info
  */
-class AboutFragment : DialogFragment(), AboutHandlers.Listener {
+class AboutFragment : DialogFragment() {
 
     val model = AboutModel()
-    val handlers = AboutHandlers(this)
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Passing in the DataBindingComponent because the Kotlin variant does go in automatically
-        var binding = FragmentAboutBinding.inflate(inflater, container, false, AboutBindingComponent());
+        var binding = FragmentAboutBinding.inflate(activity.layoutInflater, null, false, AboutBindingComponent());
         binding.model = model
-        binding.handlers = handlers
 
-        return binding.root
+        val builder = AlertDialog.Builder(activity);
+        builder.setView(binding.root)
+        builder.setPositiveButton(android.R.string.ok) { dialog, which -> removeAbout() };
+
+
+        return builder.create();
     }
 
-    override fun removeAbout() {
+    fun removeAbout() {
         dismiss()
     }
 }

@@ -27,25 +27,38 @@
  *  *
  *
  */
-package nl.renedegroot.android.opengpstracker.exporter.about;
 
-import android.view.View;
+package nl.renedegroot.android.opengpstracker.exporter.export
+
+import android.app.Dialog
+import android.os.Bundle
+import android.support.v4.app.DialogFragment
+import android.support.v7.app.AlertDialog
+import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentExportBinding
+import nl.sogeti.android.log.Log
 
 /**
- * Listen to View events and dispatch them as logical call to the listener
+ * Show progress of the export, with cancel options
  */
-public class AboutHandlers {
-    final Listener listener;
+class ExportFragment : DialogFragment() {
 
-    public AboutHandlers(Listener listener) {
-        this.listener = listener;
+    val model = ExportModel()
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // Passing in the DataBindingComponent because the Kotlin variant does go in automatically
+        var binding = FragmentExportBinding.inflate(activity.layoutInflater, null, false);
+        binding.model = model
+
+        val builder = AlertDialog.Builder(activity);
+        builder.setView(binding.root)
+        builder.setNegativeButton(android.R.string.cancel) { dialog, which -> stopExport() };
+
+
+        return builder.create();
     }
 
-    public void onOkay(View view) {
-        listener.removeAbout();
-    }
-
-    interface Listener {
-        void removeAbout();
+    fun stopExport() {
+        Log.d(this, "TODO interrupt export")
+        dismiss()
     }
 }

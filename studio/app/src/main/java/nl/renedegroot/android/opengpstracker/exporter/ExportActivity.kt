@@ -59,7 +59,6 @@ class ExportActivity : AppCompatActivity() {
     }
 
     fun showAboutDialog() {
-        var aboutFragment = AboutFragment()
-        aboutFragment.show(supportFragmentManager, "ABOUT")
+        AboutFragment().show(supportFragmentManager, "ABOUT")
     }
 }

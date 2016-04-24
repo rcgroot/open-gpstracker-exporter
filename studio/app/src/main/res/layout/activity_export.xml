@@ -51,11 +51,11 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareExportFragment"
+        android:name="nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout="@layout/fragment_export_prepare" />
+        tools:layout="@layout/fragment_prepare" />
 
 
 </android.support.design.widget.CoordinatorLayout>

@@ -29,29 +29,9 @@
  */
 package nl.renedegroot.android.opengpstracker.exporter.prepare
 
-import android.databinding.DataBindingUtil
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import nl.renedegroot.android.opengpstracker.exporter.R
-import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentExportPrepareBinding
-import nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareExportModel
-
 /**
- * A placeholder fragment containing a simple view.
+ * View model for the export preparation fragment
  */
-class PrepareExportFragment : Fragment() {
-
-    var model = PrepareExportModel()
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        //var binding = DataBindingUtil.inflate<FragmentExportPrepareBinding>(inflater, R.layout.fragment_export_prepare, container, false)
-        var binding: FragmentExportPrepareBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_export_prepare, container, false)
-        binding.exportSetting = model
-
-        return binding.root
-    }
+class PrepareModel {
+    var areImagesIncluded = true;
 }
