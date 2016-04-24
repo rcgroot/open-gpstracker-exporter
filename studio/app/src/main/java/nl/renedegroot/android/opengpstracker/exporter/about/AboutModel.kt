@@ -25,41 +25,18 @@
  *   along with "Open GPS Tracker - Exporter".  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package nl.renedegroot.android.opengpstracker.exporter
+package nl.renedegroot.android.opengpstracker.exporter.about
 
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import nl.renedegroot.android.opengpstracker.exporter.about.AboutFragment
+import nl.renedegroot.android.opengpstracker.exporter.BuildConfig.*
+import java.lang.Math.min
 
-class ExportActivity : AppCompatActivity() {
+/**
+ * View model for the about screen
+ */
+class AboutModel {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_export)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar?
-        setSupportActionBar(toolbar)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_export, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.action_settings) {
-            showAboutDialog()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun showAboutDialog() {
-        var aboutFragment = AboutFragment()
-        aboutFragment.show(supportFragmentManager, "ABOUT")
-    }
+    val url = "file:///android_asset/about.html"
+    val version = VERSION_NAME
+    val gitHash = GIT_COMMIT.take(min(7, GIT_COMMIT.length))
+    val buildNumber = BUILD_NUMBER
 }

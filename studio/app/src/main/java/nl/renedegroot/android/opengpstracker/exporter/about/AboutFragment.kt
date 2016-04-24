@@ -25,41 +25,33 @@
  *   along with "Open GPS Tracker - Exporter".  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package nl.renedegroot.android.opengpstracker.exporter
+package nl.renedegroot.android.opengpstracker.exporter.about
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import nl.renedegroot.android.opengpstracker.exporter.about.AboutFragment
+import android.support.v4.app.DialogFragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentAboutBinding
 
-class ExportActivity : AppCompatActivity() {
+/**
+ * Show a little HTML with licenses and version info
+ */
+class AboutFragment : DialogFragment(), AboutHandlers.Listener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_export)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar?
-        setSupportActionBar(toolbar)
+    val model = AboutModel()
+    val handlers = AboutHandlers(this)
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Passing in the DataBindingComponent because the Kotlin variant does go in automatically
+        var binding = FragmentAboutBinding.inflate(inflater, container, false, AboutBindingComponent());
+        binding.model = model
+        binding.handlers = handlers
+
+        return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_export, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.action_settings) {
-            showAboutDialog()
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun showAboutDialog() {
-        var aboutFragment = AboutFragment()
-        aboutFragment.show(supportFragmentManager, "ABOUT")
+    override fun removeAbout() {
+        dismiss()
     }
 }

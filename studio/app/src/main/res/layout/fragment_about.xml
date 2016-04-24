@@ -27,35 +27,46 @@
     *
     */
 -->
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="nl.renedegroot.android.opengpstracker.exporter.ExportActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    <data>
 
-    </android.support.design.widget.AppBarLayout>
+        <variable
+            name="handlers"
+            type="nl.renedegroot.android.opengpstracker.exporter.about.AboutHandlers" />
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareExportFragment"
+        <variable
+            name="model"
+            type="nl.renedegroot.android.opengpstracker.exporter.about.AboutModel" />
+    </data>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout="@layout/fragment_export_prepare" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/fragment_about_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="@{@string/about_version(model.version, model.gitHash, model.buildNumber)}" />
 
-</android.support.design.widget.CoordinatorLayout>
+        <WebView
+            android:id="@+id/fragment_about_webview"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_weight="1"
+            app:url="@{model.url}" />
+
+        <Button
+            android:id="@+id/fragment_about_button_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:onClick="@{handlers.onOkay}"
+            android:text="@android:string/ok" />
+    </LinearLayout>
+</layout>
