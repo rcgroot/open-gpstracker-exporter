@@ -31,6 +31,7 @@ package nl.renedegroot.android.opengpstracker.exporter.prepare
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.annotation.NonNull
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,12 +40,14 @@ import nl.renedegroot.android.opengpstracker.exporter.R
 import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentPrepareBinding
 import nl.renedegroot.android.opengpstracker.exporter.export.ExportFragment
 import nl.renedegroot.android.opengpstracker.exporter.exporting.ExporterManager
+import nl.sogeti.android.gpstracker.integration.PermissionRequestor
 
 /**
  * A placeholder fragment containing a simple view.
  */
 class PrepareFragment : Fragment(), PrepareHandlers.Listener {
     val model = PrepareModel()
+    val permissionRequestor = PermissionRequestor()
 
     val handlers = PrepareHandlers(this)
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -58,7 +61,18 @@ class PrepareFragment : Fragment(), PrepareHandlers.Listener {
     }
 
     override fun startExport() {
-        ExporterManager.startExport(activity)
-        ExportFragment().show(fragmentManager, "EXPORT")
+        permissionRequestor.checkTrackingPermission(activity, {
+            ExporterManager.startExport(activity)
+            ExportFragment().show(fragmentManager, "EXPORT")
+        })
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        permissionRequestor.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        permissionRequestor.stop()
     }
 }

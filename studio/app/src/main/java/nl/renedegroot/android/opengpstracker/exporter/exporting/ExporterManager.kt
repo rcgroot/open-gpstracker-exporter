@@ -49,6 +49,9 @@ object ExporterManager {
         try {
             tracks = resolver.query(Tracks.CONTENT_URI, arrayOf(Tracks._ID), null, null, null)
             waypoints = resolver.query(Waypoints.CONTENT_URI, arrayOf(Waypoints._ID), null, null, null)
+            if(tracks!=null && waypoints!=null){
+
+            }
             setTotalTrack(tracks.count)
             setTotalWaypoints(waypoints.count)
         } finally {
