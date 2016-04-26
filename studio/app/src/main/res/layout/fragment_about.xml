@@ -27,8 +27,7 @@
     *
     */
 -->
-
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -56,7 +55,6 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_weight="1"
-            app:url="@{model.url}" />
-
+            bind:url="@{model.url}" />
     </LinearLayout>
 </layout>

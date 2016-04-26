@@ -29,9 +29,11 @@
  */
 package nl.renedegroot.android.opengpstracker.exporter.prepare
 
+import android.databinding.ObservableBoolean
+
 /**
  * View model for the export preparation fragment
  */
 class PrepareModel {
-    var areImagesIncluded = true;
+    val areImagesIncluded = ObservableBoolean();
 }

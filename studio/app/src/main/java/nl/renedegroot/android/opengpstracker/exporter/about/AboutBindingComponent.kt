@@ -50,5 +50,4 @@ class AboutBindingComponent : DataBindingComponent {
             webView.loadUrl(url);
         }
     }
-
 }
