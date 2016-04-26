@@ -36,4 +36,8 @@ import android.databinding.ObservableBoolean
  */
 class PrepareModel {
     val areImagesIncluded = ObservableBoolean();
+
+    init {
+        areImagesIncluded.set(true)
+    }
 }
