@@ -35,33 +35,45 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Asks for Open GPS tracker permissions
  */
 public class PermissionRequestor implements DialogInterface.OnClickListener {
 
-    private static final int REQUEST_TRACKING_CONTROL = 10000001;
-    private static final int REQUEST_TRACKS_CONTENT = 10000002;
+    private static final int REQUEST_CODE = 10000001;
     private static final String INSTALL_URI = "https://play.google.com/store/apps/details?id=nl.sogeti.android.gpstracker";
 
     private AlertDialog permissionDialog;
     private AlertDialog installDialog;
     private Activity activity;
     private Runnable runnable;
+    private Set<String> requestedPermissions = new HashSet<>();
+
+    public void checkTracksPermission(final Activity _activity, Runnable _runnable) {
+        checkPermission(_activity, _runnable, R.string.permission_explain_need_content, ServiceConstants.permission.TRACKING_HISTORY);
+    }
 
     public void checkTrackingPermission(final Activity _activity, Runnable _runnable) {
+        checkPermission(_activity, _runnable, R.string.permission_explain_need_control, ServiceConstants.permission.TRACKING_CONTROL);
+    }
+
+    private void checkPermission(final Activity _activity, Runnable _runnable, @StringRes int message, final String permission) {
         this.activity = _activity;
         this.runnable = _runnable;
-
+        requestedPermissions.add(permission);
         if (ServiceManager.isPackageInstalled(activity)) {
-            if (ContextCompat.checkSelfPermission(activity, ServiceConstants.permission.TRACKING_CONTROL) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, ServiceConstants.permission.TRACKING_CONTROL)) {
+            if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                     permissionDialog = new AlertDialog.Builder(activity)
-                            .setMessage(R.string.permission_explain_need_control)
+                            .setMessage(message)
                             .setPositiveButton(android.R.string.ok, this)
                             .setNegativeButton(android.R.string.cancel, null)
                             .show();
@@ -89,7 +101,7 @@ public class PermissionRequestor implements DialogInterface.OnClickListener {
 
     private void executePermissionsRequest() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            activity.requestPermissions(new String[]{ServiceConstants.permission.TRACKING_CONTROL, ServiceConstants.permission.TRACKING_HISTORY}, REQUEST_TRACKING_CONTROL);
+            activity.requestPermissions(requestedPermissions.toArray(new String[requestedPermissions.size()]), REQUEST_CODE);
         }
     }
 
@@ -115,12 +127,19 @@ public class PermissionRequestor implements DialogInterface.OnClickListener {
     }
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_TRACKING_CONTROL) {
+        if (requestCode == REQUEST_CODE) {
+            boolean granted = false;
             for (int i = 0; i < permissions.length; i++) {
-                if (ServiceConstants.permission.TRACKING_CONTROL.equals(permissions[i])
-                        && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                    runnable.run();
+                if (requestedPermissions.contains(permissions[i])) {
+                    granted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
+                    if (!granted) {
+                        break;
+                    }
                 }
+            }
+            if (granted) {
+                requestedPermissions.clear();
+                runnable.run();
             }
         }
     }

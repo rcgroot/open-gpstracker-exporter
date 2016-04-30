@@ -98,22 +98,22 @@ class ExportActivity : AppCompatActivity(), ExportFragment.Listener {
     }
 
     override fun connectTracksDatabase() {
-        permissionRequestor.checkTrackingPermission(this, {
+        permissionRequestor.checkTracksPermission(this, {
             model?.isTrackerConnected?.set(true)
         })
     }
 
     private fun connectToServices() {
-        driveManager.start(this, { isConnected ->
-            model?.isDriveConnected?.set(isConnected)
-            if (isConnected) {
-                permissionRequestor.checkTrackingPermission(this, {
-                    model?.isTrackerConnected?.set(true)
+        permissionRequestor.checkTracksPermission(this, {
+            model?.isTrackerConnected?.set(true)
+            driveManager.start(this, { isConnected ->
+                model?.isDriveConnected?.set(isConnected)
+                if (isConnected) {
                     Log.d(this, "Everything is connected")
-                })
-            } else {
-                Log.d(this, "Drive failed")
-            }
+                } else {
+                    Log.d(this, "Drive failed")
+                }
+            })
         })
     }
 

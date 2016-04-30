@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="Step 1: Access track database" />
+                android:text="@string/export_step1" />
 
             <CheckBox
                 android:id="@+id/fragment_export_ogt"
@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:checked="@{model.isTrackerConnected}"
                 android:enabled="@{!model.isTrackerConnected}"
+                android:onClick="@{(view) -> handlers.connectTracks()}"
                 android:text="@string/export_ogt_connected" />
 
             <TextView
@@ -87,15 +88,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="Step 2: Access Google Drive" />
+                android:text="@string/export_step2" />
 
             <CheckBox
                 android:id="@+id/fragment_export_drive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:checked="@{model.isDriveConnected}"
                 android:enabled="@{!model.isDriveConnected}"
+                android:onClick="@{(view) -> handlers.connectDrive()}"
                 android:text="@string/export_drive_connected" />
 
             <TextView
@@ -103,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="Step 3: Export tracks from track database to GPX files on Google Drive" />
+                android:text="@string/export_step3" />
 
             <TextView
                 android:id="@+id/fragment_export_progress_tracks"
@@ -136,6 +137,15 @@
                 android:paddingRight="8dp"
                 android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}" />
 
+
+            <CheckBox
+                android:id="@+id/fragment_export_done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{model.isDone}"
+                android:enabled="false"
+                android:text="@string/export_ogt_done" />
+
         </android.support.v7.widget.LinearLayoutCompat>
 
         <Button
@@ -145,6 +155,6 @@
             android:layout_alignParentBottom="true"
             android:enabled="@{!model.isRunning}"
             android:onClick="@{(view) -> handlers.nextStep(model)}"
-            android:text="Start export" />
+            android:text="@string/export_button_start_export" />
     </RelativeLayout>
 </layout>

@@ -40,6 +40,7 @@ class ExportModel : exporterManager.ProgressListener {
     val isDriveConnected = ObservableBoolean(false);
     val isTrackerConnected = ObservableBoolean(false);
     val isRunning = ObservableBoolean(false)
+    val isDone = ObservableBoolean(false)
 
     val completedTracks = ObservableInt(0)
     val totalTracks = ObservableInt(0)

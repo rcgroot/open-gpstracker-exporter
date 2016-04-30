@@ -39,6 +39,14 @@ public class ExportHandlers {
         this.listener = listener;
     }
 
+    public void connectDrive() {
+        listener.startDriveConnect();
+    }
+
+    public void connectTracks() {
+        listener.startTracksConnect();
+    }
+
     public void nextStep(ExportModel model) {
         if (!model.isTrackerConnected().get()) {
             listener.startTracksConnect();
