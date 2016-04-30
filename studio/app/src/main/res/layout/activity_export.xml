@@ -50,12 +50,12 @@
     </android.support.design.widget.AppBarLayout>
 
     <fragment
-        android:id="@+id/fragment"
-        android:name="nl.renedegroot.android.opengpstracker.exporter.prepare.PrepareFragment"
+        android:id="@+id/fragment_export"
+        android:name="nl.renedegroot.android.opengpstracker.exporter.export.ExportFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout="@layout/fragment_prepare" />
+        tools:layout="@layout/fragment_export" />
 
 
 </android.support.design.widget.CoordinatorLayout>

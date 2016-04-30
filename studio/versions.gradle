@@ -6,4 +6,5 @@ ext {
     // Testing
     junitVersion = '4.12'
     mockitoVersion = '1.9.5'
+    buildToolsVersion = '24.0.0rc3'
 }

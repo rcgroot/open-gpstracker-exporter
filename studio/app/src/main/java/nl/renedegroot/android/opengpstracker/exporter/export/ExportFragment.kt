@@ -27,48 +27,70 @@
  *  *
  *
  */
-
 package nl.renedegroot.android.opengpstracker.exporter.export
 
-import android.app.Dialog
+import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
+import android.support.v4.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import nl.renedegroot.android.opengpstracker.exporter.R
 import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentExportBinding
-import nl.renedegroot.android.opengpstracker.exporter.exporting.ExporterManager
+import nl.renedegroot.android.opengpstracker.exporter.exporting.exporterManager
 
 /**
- * Show progress of the export, with cancel options
+ * A placeholder fragment containing a simple view.
  */
-class ExportFragment : DialogFragment() {
+class ExportFragment : Fragment(), ExportHandlers.Listener {
 
-    val model = ExportModel()
+    private val handlers = ExportHandlers(this)
+    private var binding: FragmentExportBinding? = null
+    private var model: ExportModel? = null
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // Passing in the DataBindingComponent because the Kotlin variant does go in automatically
-        var binding = FragmentExportBinding.inflate(activity.layoutInflater, null, false);
-        binding.model = model
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        var createdBinding = DataBindingUtil.inflate<FragmentExportBinding>(inflater, R.layout.fragment_export, container, false)
+        model = (activity as Listener).getExportModel()
+        createdBinding.model = model
+        createdBinding.handlers = handlers
+        binding = createdBinding
 
-        val builder = AlertDialog.Builder(activity);
-        builder.setView(binding.root)
-        builder.setNegativeButton(android.R.string.cancel) { dialog, which -> stopExport() };
-
-
-        return builder.create();
+        return createdBinding.root
     }
 
     override fun onResume() {
         super.onResume()
-        ExporterManager.addListener(model)
+        exporterManager.addListener(model as exporterManager.ProgressListener)
     }
 
     override fun onPause() {
-        ExporterManager.removeListener(model)
+        exporterManager.removeListener(model as exporterManager.ProgressListener)
         super.onPause()
     }
 
-    fun stopExport() {
-        ExporterManager.stopExport()
-        dismiss()
+    override fun onDestroyView() {
+        model = null
+        super.onDestroyView()
+    }
+
+    override fun startTracksConnect() {
+        (activity as Listener).connectTracksDatabase()
+    }
+
+    override fun startDriveConnect() {
+        (activity as Listener).connectGoogleDrive()
+    }
+
+    override fun startExport() {
+        exporterManager.startExport(activity)
+    }
+
+    interface Listener {
+        fun getExportModel(): ExportModel
+
+        fun connectTracksDatabase()
+
+        fun connectGoogleDrive()
     }
 }

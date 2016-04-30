@@ -27,24 +27,55 @@
  */
 package nl.renedegroot.android.opengpstracker.exporter
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import nl.renedegroot.android.opengpstracker.exporter.about.AboutFragment
+import nl.renedegroot.android.opengpstracker.exporter.export.ExportFragment
+import nl.renedegroot.android.opengpstracker.exporter.export.ExportModel
+import nl.renedegroot.android.opengpstracker.exporter.exporting.driveManager
+import nl.sogeti.android.gpstracker.integration.PermissionRequestor
+import nl.sogeti.android.log.Log
 
-class ExportActivity : AppCompatActivity() {
+/**
+ * Owns the export model and communicated the the Android system regarding
+ * permissions.
+ */
+class ExportActivity : AppCompatActivity(), ExportFragment.Listener {
+
+    private val model = ExportModel()
+    private val permissionRequestor = PermissionRequestor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_export)
         val toolbar = findViewById(R.id.toolbar) as Toolbar?
         setSupportActionBar(toolbar)
+        connectToServices()
+    }
+
+    override fun onDestroy() {
+        permissionRequestor.stop()
+        driveManager.stop()
+        super.onDestroy()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        driveManager.processResult(requestCode, resultCode)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        permissionRequestor.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_export, menu)
+
         return true
     }
 
@@ -56,6 +87,34 @@ class ExportActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun getExportModel(): ExportModel = model
+
+    override fun connectGoogleDrive() {
+        driveManager.start(this, { isConnected ->
+            model?.isDriveConnected?.set(isConnected)
+        })
+    }
+
+    override fun connectTracksDatabase() {
+        permissionRequestor.checkTrackingPermission(this, {
+            model?.isTrackerConnected?.set(true)
+        })
+    }
+
+    private fun connectToServices() {
+        driveManager.start(this, { isConnected ->
+            model?.isDriveConnected?.set(isConnected)
+            if (isConnected) {
+                permissionRequestor.checkTrackingPermission(this, {
+                    model?.isTrackerConnected?.set(true)
+                    Log.d(this, "Everything is connected")
+                })
+            } else {
+                Log.d(this, "Drive failed")
+            }
+        })
     }
 
     fun showAboutDialog() {

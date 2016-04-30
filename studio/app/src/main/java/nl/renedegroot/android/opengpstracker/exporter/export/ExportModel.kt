@@ -27,19 +27,30 @@
  *  *
  *
  */
-
 package nl.renedegroot.android.opengpstracker.exporter.export
 
-import nl.renedegroot.android.opengpstracker.exporter.exporting.ExporterManager
+import android.databinding.ObservableBoolean
+import android.databinding.ObservableInt
+import nl.renedegroot.android.opengpstracker.exporter.exporting.exporterManager
 
 /**
- * Progress and total of the export
+ * View model for the export preparation fragment
  */
-class ExportModel : ExporterManager.ProgressListener {
+class ExportModel : exporterManager.ProgressListener {
+    val isDriveConnected = ObservableBoolean(false);
+    val isTrackerConnected = ObservableBoolean(false);
+    val isRunning = ObservableBoolean(false)
 
-    override var isRunning = false
-    override var completedTracks = 0
-    override var totalTracks = 0
-    override var totalWaypoints = 0
-    override var completedWaypoints = 0
+    val completedTracks = ObservableInt(0)
+    val totalTracks = ObservableInt(0)
+    val totalWaypoints = ObservableInt(0)
+    val completedWaypoints = ObservableInt(0)
+
+    override fun updateExportProgress(isRunning: Boolean?, completedTracks: Int?, totalTracks: Int?, completedWaypoints: Int?, totalWaypoints: Int?) {
+        this.isRunning.set(isRunning ?: this.isRunning.get())
+        this.completedTracks.set(completedTracks ?: this.completedTracks.get())
+        this.totalTracks.set(totalTracks ?: this.totalTracks.get())
+        this.completedWaypoints.set(completedWaypoints ?: this.completedWaypoints.get())
+        this.totalWaypoints.set(totalWaypoints ?: this.totalWaypoints.get())
+    }
 }

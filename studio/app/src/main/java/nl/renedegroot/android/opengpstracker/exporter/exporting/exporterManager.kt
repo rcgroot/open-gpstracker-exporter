@@ -39,7 +39,7 @@ import java.util.*
 /**
  * Manager the exporting process
  */
-object ExporterManager {
+object exporterManager {
     private val listeners = HashSet<ProgressListener>()
 
     fun startExport(context: Context) {
@@ -49,11 +49,10 @@ object ExporterManager {
         try {
             tracks = resolver.query(Tracks.CONTENT_URI, arrayOf(Tracks._ID), null, null, null)
             waypoints = resolver.query(Waypoints.CONTENT_URI, arrayOf(Waypoints._ID), null, null, null)
-            if(tracks!=null && waypoints!=null){
-
+            if (tracks != null && waypoints != null) {
+                setTotalTrack(tracks.count)
+                setTotalWaypoints(waypoints.count)
             }
-            setTotalTrack(tracks.count)
-            setTotalWaypoints(waypoints.count)
         } finally {
             tracks?.close()
             waypoints?.close()
@@ -61,11 +60,11 @@ object ExporterManager {
     }
 
     private fun setTotalWaypoints(count: Int) {
-        listeners.forEach { it.totalTracks = count }
+        listeners.forEach { it.updateExportProgress(totalWaypoints = count) }
     }
 
     private fun setTotalTrack(count: Int) {
-        listeners.forEach { it.totalTracks = count }
+        listeners.forEach { it.updateExportProgress(totalTracks = count) }
     }
 
     fun stopExport() {
@@ -81,10 +80,6 @@ object ExporterManager {
     }
 
     interface ProgressListener {
-        var completedTracks: Int
-        var totalTracks: Int
-        var totalWaypoints: Int
-        var completedWaypoints: Int
-        var isRunning: Boolean
+        fun updateExportProgress(isRunnable: Boolean? = true, completedTracks: Int? = null, totalTracks: Int? = null, completedWaypoints: Int? = null, totalWaypoints: Int? = null)
     }
 }

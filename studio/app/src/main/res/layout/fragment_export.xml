@@ -27,36 +27,124 @@
     *
     */
 -->
-
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="handlers"
+            type="nl.renedegroot.android.opengpstracker.exporter.export.ExportHandlers" />
 
         <variable
             name="model"
             type="nl.renedegroot.android.opengpstracker.exporter.export.ExportModel" />
     </data>
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:id="@+id/fragment_export__progress_tracks"
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:divider="@drawable/space_8dp_height"
+            app:showDividers="middle"
+            tools:context=".export.ExportFragment">
+
+            <TextView
+                android:id="@+id/fragment_export_explained"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This application can export all your Open GPS Tracker tracks to GPX files on Google Drive." />
+
+
+            <TextView
+                android:id="@+id/fragment_export_step1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Step 1: Access track database" />
+
+            <CheckBox
+                android:id="@+id/fragment_export_ogt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="@{model.isTrackerConnected}"
+                android:enabled="@{!model.isTrackerConnected}"
+                android:text="@string/export_ogt_connected" />
+
+            <TextView
+                android:id="@+id/fragment_export_step2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Step 2: Access Google Drive" />
+
+            <CheckBox
+                android:id="@+id/fragment_export_drive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:checked="@{model.isDriveConnected}"
+                android:enabled="@{!model.isDriveConnected}"
+                android:text="@string/export_drive_connected" />
+
+            <TextView
+                android:id="@+id/fragment_export_step3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Step 3: Export tracks from track database to GPX files on Google Drive" />
+
+            <TextView
+                android:id="@+id/fragment_export_progress_tracks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="@{@string/export_tracks(model.completedTracks, model.totalTracks)}"
+                android:textColor="@android:color/black"
+                android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}"
+                tools:text="Tracks: 1 out of 12" />
+
+            <TextView
+                android:id="@+id/fragment_export_progress_waypoints"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:paddingLeft="8dp"
+                android:text="@{@string/export_waypoints(model.completedWaypoints, model.totalWaypoints)}"
+                android:textColor="@android:color/black"
+                android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}"
+                tools:text="Waypoints: 1 out of 34" />
+
+            <ProgressBar
+                android:id="@+id/fragment_export_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <Button
+            android:id="@+id/fragment_export_nextStep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{@string/export_progress_tracks(model.completedTracks, model.totalTracks)}" />
-
-        <TextView
-            android:id="@+id/fragment_export__progress_waypoints"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{@string/export_progress_waypoints(model.completedWaypoints, model.totalWaypoints)}" />
-
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:enabled="@{!model.isRunning}"
+            android:onClick="@{(view) -> handlers.nextStep(model)}"
+            android:text="Start export" />
+    </RelativeLayout>
 </layout>

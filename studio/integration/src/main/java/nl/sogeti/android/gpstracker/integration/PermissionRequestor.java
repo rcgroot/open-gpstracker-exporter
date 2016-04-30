@@ -45,6 +45,7 @@ import android.support.v7.app.AlertDialog;
 public class PermissionRequestor implements DialogInterface.OnClickListener {
 
     private static final int REQUEST_TRACKING_CONTROL = 10000001;
+    private static final int REQUEST_TRACKS_CONTENT = 10000002;
     private static final String INSTALL_URI = "https://play.google.com/store/apps/details?id=nl.sogeti.android.gpstracker";
 
     private AlertDialog permissionDialog;

@@ -27,25 +27,33 @@
  *  *
  *
  */
-package nl.renedegroot.android.opengpstracker.exporter.prepare;
-
-import android.view.View;
+package nl.renedegroot.android.opengpstracker.exporter.export;
 
 /**
  * Listen to View events and dispatch them as logical call to the listener
  */
-public class PrepareHandlers {
+public class ExportHandlers {
     final Listener listener;
 
-    public PrepareHandlers(Listener listener) {
+    public ExportHandlers(Listener listener) {
         this.listener = listener;
     }
 
-    public void onStart(View view) {
-        listener.startExport();
+    public void nextStep(ExportModel model) {
+        if (!model.isTrackerConnected().get()) {
+            listener.startTracksConnect();
+        } else if (!model.isDriveConnected().get()) {
+            listener.startDriveConnect();
+        } else {
+            listener.startExport();
+        }
     }
 
     interface Listener {
+        void startTracksConnect();
+
+        void startDriveConnect();
+
         void startExport();
     }
 }

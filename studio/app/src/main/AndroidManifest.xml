@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nl.renedegroot.android.opengpstracker.exporter">
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +13,9 @@
             android:name=".ExportActivity"
             android:label="@string/app_name_short"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="com.google.android.apps.drive.APP_ID"
+                android:value="id=808343543560" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
