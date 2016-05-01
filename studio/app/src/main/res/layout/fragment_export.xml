@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:checked="@{model.isTrackerConnected}"
                 android:enabled="@{!model.isTrackerConnected}"
-                android:onClick="@{(view) -> handlers.connectTracks()}"
+                android:onClick="@{(view) -> handlers.connectTracks(view)}"
                 android:text="@string/export_ogt_connected" />
 
             <TextView
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:checked="@{model.isDriveConnected}"
                 android:enabled="@{!model.isDriveConnected}"
-                android:onClick="@{(view) -> handlers.connectDrive()}"
+                android:onClick="@{(view) -> handlers.connectDrive(view)}"
                 android:text="@string/export_drive_connected" />
 
             <TextView

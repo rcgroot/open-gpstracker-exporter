@@ -29,6 +29,9 @@
  */
 package nl.renedegroot.android.opengpstracker.exporter.export;
 
+import android.view.View;
+import android.widget.CheckBox;
+
 /**
  * Listen to View events and dispatch them as logical call to the listener
  */
@@ -39,11 +42,17 @@ public class ExportHandlers {
         this.listener = listener;
     }
 
-    public void connectDrive() {
+    public void connectDrive(View view) {
+        if (view instanceof CheckBox) {
+            ((CheckBox) view).setChecked(false);
+        }
         listener.startDriveConnect();
     }
 
-    public void connectTracks() {
+    public void connectTracks(View view) {
+        if (view instanceof CheckBox) {
+            ((CheckBox) view).setChecked(false);
+        }
         listener.startTracksConnect();
     }
 
