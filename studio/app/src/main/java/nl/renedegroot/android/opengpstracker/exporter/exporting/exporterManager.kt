@@ -132,7 +132,15 @@ object exporterManager {
     }
 
     private fun finished() {
-        listeners.forEach { it.updateExportProgress(isRunning = false, isFinished = true) }
+        val completedTracks = completedTracks.size
+        val completedWaypoints = waypointProgressPerTrack.values.sum()
+        listeners.forEach {
+            it.updateExportProgress(
+                    isRunning = false,
+                    isFinished = true,
+                    completedTracks = completedTracks,
+                    completedWaypoints = completedWaypoints)
+        }
     }
 
     fun stopExport() {

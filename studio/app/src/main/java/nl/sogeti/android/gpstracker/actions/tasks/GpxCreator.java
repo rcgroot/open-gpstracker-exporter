@@ -164,6 +164,8 @@ public abstract class GpxCreator extends XmlCreator {
         serializer.text("\n");
         serializer.endTag("", "gpx");
         serializer.endDocument();
+
+        publishProgress();
     }
 
     private void serializeTrackHeader(Context context, XmlSerializer serializer, Uri trackUri) throws IOException {
