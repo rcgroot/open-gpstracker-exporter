@@ -28,10 +28,10 @@
     */
 -->
 <resources>
-    <string name="app_name">Open GPS Tracker - Exporter</string>
-    <string name="app_name_short">OGT Exporter</string>
+    <string name="app_name" translatable="false">Open GPS Tracker - Exporter</string>
+    <string name="app_name_short" translatable="false">OGT Exporter</string>
     <string name="action_about">About</string>
-    <string name="about_version">Version %1$s (%2$s, build %3$d)</string>
+    <string name="about_version" translatable="false">Version %1$s (%2$s, build %3$d)</string>
     <string name="export_drive_connected">Google Drive access permitted</string>
     <string name="export_ogt_connected">Tracks database access permitted</string>
     <string name="export_ogt_done">Tracks export completed</string>
