@@ -154,7 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:enabled="@{!model.isRunning}"
+            android:enabled="@{!model.isRunning &amp;&amp; !model.isFinished}"
             android:onClick="@{(view) -> handlers.nextStep(model)}"
             android:text="@string/export_button_start_export" />
     </RelativeLayout>
