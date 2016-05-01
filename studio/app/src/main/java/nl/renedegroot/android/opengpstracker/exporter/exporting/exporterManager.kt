@@ -96,16 +96,15 @@ object exporterManager {
             if (tracks?.moveToFirst() ?: false && waypoints?.moveToFirst() ?: false) {
                 setTotalTrack(tracks.count)
                 setTotalWaypoints(waypoints.count)
+                do {
+                    val id = tracks.getLong(0);
+                    val trackUri = ContentUris.withAppendedId(CONTENT_URI, id);
+                    waypointProgressPerTrack.put(trackUri, 0)
+                    val creator = DriveUploadTask(context, trackUri, progressListener, driveApi)
+                    creator.executeOn(executor)
+
+                } while (tracks.moveToNext() && !shouldStop)
             }
-            do {
-                val id = tracks.getLong(0);
-                val trackUri = ContentUris.withAppendedId(CONTENT_URI, id);
-                waypointProgressPerTrack.put(trackUri, 0)
-                val creator = DriveUploadTask(context, trackUri, progressListener, driveApi)
-                creator.executeOn(executor)
-
-            } while (tracks.moveToNext() && !shouldStop)
-
         } finally {
             tracks?.close()
             waypoints?.close()
