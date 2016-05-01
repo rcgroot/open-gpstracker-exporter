@@ -40,15 +40,16 @@ class ExportModel : exporterManager.ProgressListener {
     val isDriveConnected = ObservableBoolean(false);
     val isTrackerConnected = ObservableBoolean(false);
     val isRunning = ObservableBoolean(false)
-    val isDone = ObservableBoolean(false)
+    val isFinished = ObservableBoolean(false)
 
     val completedTracks = ObservableInt(0)
     val totalTracks = ObservableInt(0)
     val totalWaypoints = ObservableInt(0)
     val completedWaypoints = ObservableInt(0)
 
-    override fun updateExportProgress(isRunning: Boolean?, completedTracks: Int?, totalTracks: Int?, completedWaypoints: Int?, totalWaypoints: Int?) {
+    override fun updateExportProgress(isRunning: Boolean?, isFinished: Boolean?, completedTracks: Int?, totalTracks: Int?, completedWaypoints: Int?, totalWaypoints: Int?) {
         this.isRunning.set(isRunning ?: this.isRunning.get())
+        this.isFinished.set(isFinished ?: this.isFinished.get())
         this.completedTracks.set(completedTracks ?: this.completedTracks.get())
         this.totalTracks.set(totalTracks ?: this.totalTracks.get())
         this.completedWaypoints.set(completedWaypoints ?: this.completedWaypoints.get())

@@ -44,28 +44,29 @@ import nl.sogeti.android.log.Log
 object driveManager : GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private val REQUEST_CODE_RESOLUTION = 1
     private val REQUEST_CODE_ERROR = 2
-    private var client: GoogleApiClient? = null
+    var driveClient: GoogleApiClient? = null
+        private set
     private var activity: Activity? = null
     private var onConnected: (Boolean) -> Unit = {}
 
     fun start(activity: Activity, onConnected: (Boolean) -> Unit = {}) {
         this.activity = activity
         this.onConnected = onConnected
-        if (client == null) {
-            client = GoogleApiClient.Builder(activity.applicationContext)
+        if (driveClient == null) {
+            driveClient = GoogleApiClient.Builder(activity.applicationContext)
                     .addApi(Drive.API)
                     .addScope(Drive.SCOPE_FILE)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build()
         }
-        client?.connect()
+        driveClient?.connect()
     }
 
     fun processResult(requestCode: Int, resultCode: Int): Boolean {
         if (requestCode == REQUEST_CODE_RESOLUTION) {
             if (resultCode == Activity.RESULT_OK) {
-                client?.connect()
+                driveClient?.connect()
             }
             return true
         }
@@ -75,7 +76,7 @@ object driveManager : GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnCon
     fun stop() {
         activity = null
         onConnected = {}
-        client?.disconnect()
+        driveClient?.disconnect()
     }
 
     override fun onConnected(result: Bundle?) {

@@ -41,4 +41,14 @@
     <string name="export_step2">Step 2: Access Google Drive</string>
     <string name="export_step3">Step 3: Export tracks from track database to GPX files on Google Drive</string>
     <string name="export_button_start_export">Continue</string>
+
+    <!-- Export task -->
+    <string name="ticker_saving">Saving: </string>
+    <string name="taskerror_gpx_write">Writing GPX data</string>
+    <string name="ticker_failed">Unable to save the route: </string>
+    <string name="error_filenotfound"> reason: Can not find file or directory on SD card</string>
+    <string name="error_filename"> reason: Incorrect filename</string>
+    <string name="error_buildxml"> reason: Error building XML</string>
+    <string name="error_writefailed"> reason: Error writing to destination</string>
+
 </resources>

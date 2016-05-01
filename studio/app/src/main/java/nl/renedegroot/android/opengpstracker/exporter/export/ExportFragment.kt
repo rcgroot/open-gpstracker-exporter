@@ -37,6 +37,7 @@ import android.view.View
 import android.view.ViewGroup
 import nl.renedegroot.android.opengpstracker.exporter.R
 import nl.renedegroot.android.opengpstracker.exporter.databinding.FragmentExportBinding
+import nl.renedegroot.android.opengpstracker.exporter.exporting.driveManager
 import nl.renedegroot.android.opengpstracker.exporter.exporting.exporterManager
 
 /**
@@ -83,7 +84,10 @@ class ExportFragment : Fragment(), ExportHandlers.Listener {
     }
 
     override fun startExport() {
-        exporterManager.startExport(activity)
+        val client = driveManager.driveClient;
+        if (client != null) {
+            exporterManager.startExport(activity, client)
+        }
     }
 
     interface Listener {

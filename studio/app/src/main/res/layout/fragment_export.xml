@@ -113,7 +113,7 @@
                 android:paddingLeft="8dp"
                 android:text="@{@string/export_tracks(model.completedTracks, model.totalTracks)}"
                 android:textColor="@android:color/black"
-                android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}"
+                android:visibility="@{model.isRunning || model.isFinished ? View.VISIBLE : View.GONE}"
                 tools:text="Tracks: 1 out of 12" />
 
             <TextView
@@ -124,7 +124,7 @@
                 android:paddingLeft="8dp"
                 android:text="@{@string/export_waypoints(model.completedWaypoints, model.totalWaypoints)}"
                 android:textColor="@android:color/black"
-                android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}"
+                android:visibility="@{model.isRunning || model.isFinished ? View.VISIBLE : View.GONE}"
                 tools:text="Waypoints: 1 out of 34" />
 
             <ProgressBar
@@ -133,6 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:keepScreenOn="true"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}" />
@@ -142,7 +143,7 @@
                 android:id="@+id/fragment_export_done"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="@{model.isDone}"
+                android:checked="@{model.isFinished}"
                 android:enabled="false"
                 android:text="@string/export_ogt_done" />
 
