@@ -44,7 +44,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Asks for Open GPS tracker permissions
+ * Asks for Open GPS tracker permissions, forward onRequestPermissionsResult from your Activity to this class
  */
 public class PermissionRequestor implements DialogInterface.OnClickListener {
 
@@ -102,6 +102,8 @@ public class PermissionRequestor implements DialogInterface.OnClickListener {
     private void executePermissionsRequest() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.requestPermissions(requestedPermissions.toArray(new String[requestedPermissions.size()]), REQUEST_CODE);
+        } else {
+            runnable.run();
         }
     }
 
@@ -126,6 +128,11 @@ public class PermissionRequestor implements DialogInterface.OnClickListener {
         executePermissionsRequest();
     }
 
+    /**
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CODE) {
             boolean granted = false;
