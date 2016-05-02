@@ -30,13 +30,15 @@
 <resources>
     <string name="action_about">Over</string>
     <string name="error_buildxml"></string>
-    <string name="export_button_start_export">Doorgaan</string>
     <string name="export_drive_connected">Google Drive toegang verleend</string>
     <string name="export_ogt_connected">Route database toegang verleend</string>
     <string name="export_ogt_done">Route export voltooid</string>
     <string name="export_step1">Stap 1: Toegang tot route database</string>
     <string name="export_step2">Stap 2: Toegang tot Google Drive</string>
     <string name="export_step3">Stap 3: Exporteer routes uit database naar GPX bestanden</string>
+    <string name="export_button_connect_tracks">Verbind database</string>
+    <string name="export_button_connect_drive">Verbind Drive</string>
+    <string name="export_button_start_export">Exporteer nu</string>
     <string name="export_tracks">Voltooide routes: %1$d van de %2$d</string>
     <string name="export_waypoints">Voltooide locaties: %1$d van de %2$d</string>
 </resources>

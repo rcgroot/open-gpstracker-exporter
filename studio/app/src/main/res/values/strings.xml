@@ -40,7 +40,9 @@
     <string name="export_step1">Step 1: Access track database</string>
     <string name="export_step2">Step 2: Access Google Drive</string>
     <string name="export_step3">Step 3: Export tracks from track database to GPX files on Google Drive</string>
-    <string name="export_button_start_export">Continue</string>
+    <string name="export_button_connect_tracks">Connect tracks</string>
+    <string name="export_button_connect_drive">Connect drive</string>
+    <string name="export_button_start_export">Export now</string>
 
     <!-- Export task -->
     <string name="ticker_saving">Saving: </string>
