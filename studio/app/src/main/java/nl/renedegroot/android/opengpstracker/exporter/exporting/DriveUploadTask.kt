@@ -42,7 +42,6 @@ import com.google.android.gms.drive.query.Query
 import com.google.android.gms.drive.query.SearchableField
 import nl.sogeti.android.gpstracker.actions.tasks.GpxCreator
 import nl.sogeti.android.gpstracker.actions.tasks.ProgressListener
-import java.io.IOException
 
 /**
  * Async task that uses the GpxCreate URI to Stream capability to fill a Google Drive file with said stream
@@ -62,11 +61,7 @@ class DriveUploadTask(context: Context, trackUri: Uri, listener: ProgressListene
         }
 
         // Step 2: Fill content with GPX data
-        try {
-            super.exportGpx(driveContentsResult.driveContents.outputStream)
-        } catch (e: IOException) {
-            handleError(TASK, e, "Write GPX")
-        }
+        super.exportGpx(driveContentsResult.driveContents.outputStream)
         if (isCancelled) {
             return null
         }

@@ -34,6 +34,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
 import nl.sogeti.android.gpstracker.integration.ContentConstants.Tracks
 import nl.sogeti.android.gpstracker.integration.ContentConstants.Tracks.CONTENT_URI
@@ -54,38 +55,11 @@ object exporterManager {
     private var shouldStop = false
     private val waypointProgressPerTrack = mutableMapOf<Uri, Int>()
     private val completedTracks = mutableSetOf<Uri>()
-
-    class Inner : nl.sogeti.android.gpstracker.actions.tasks.ProgressListener {
-        override fun started(source: Uri?) {
-            Log.d(this, "Started $source")
-        }
-
-        override fun setProgress(source: Uri?, value: Int) {
-            if (source != null) {
-                waypointProgressPerTrack.put(source, value)
-            }
-        }
-
-        override fun finished(source: Uri?, result: Uri?) {
-            Log.d(this, "Finished $source")
-            if (source != null) {
-                completedTracks.add(source)
-                if (completedTracks.size == waypointProgressPerTrack.size) {
-                    finished()
-                } else {
-                    updateProgress()
-                }
-            }
-        }
-
-        override fun showError(task: String?, errorMessage: String?, exception: Exception?) {
-            throw UnsupportedOperationException()
-        }
-    }
-
-    private val progressListener = Inner()
+    private val progressListener = InnerProgressListener()
+    private var context: Context? = null
 
     fun startExport(context: Context, driveApi: GoogleApiClient) {
+        this.context = context
         shouldStop = false
         val resolver = context.contentResolver;
         var tracks: Cursor? = null
@@ -140,10 +114,12 @@ object exporterManager {
                     completedTracks = completedTracks,
                     completedWaypoints = completedWaypoints)
         }
+        context = null
     }
 
     fun stopExport() {
         shouldStop = true
+        executor.queue.clear()
     }
 
     fun addListener(listener: ProgressListener) {
@@ -155,6 +131,36 @@ object exporterManager {
     }
 
     interface ProgressListener {
+
         fun updateExportProgress(isRunning: Boolean? = true, isFinished: Boolean? = false, completedTracks: Int? = null, totalTracks: Int? = null, completedWaypoints: Int? = null, totalWaypoints: Int? = null)
+    }
+
+    class InnerProgressListener : nl.sogeti.android.gpstracker.actions.tasks.ProgressListener {
+        override fun started(source: Uri?) {
+            Log.d(this, "Started $source")
+        }
+
+        override fun setProgress(source: Uri?, value: Int) {
+            if (source != null) {
+                waypointProgressPerTrack.put(source, value)
+            }
+        }
+
+        override fun finished(source: Uri?, result: Uri?) {
+            Log.d(this, "Finished $source")
+            if (source != null) {
+                completedTracks.add(source)
+                if (completedTracks.size == waypointProgressPerTrack.size) {
+                    finished()
+                } else {
+                    updateProgress()
+                }
+            }
+        }
+
+        override fun showError(task: String?, errorMessage: String?, exception: Exception?) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            context = null
+        }
     }
 }
