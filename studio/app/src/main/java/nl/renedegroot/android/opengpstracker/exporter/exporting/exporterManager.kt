@@ -36,6 +36,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.widget.Toast
 import com.google.android.gms.common.api.GoogleApiClient
+import nl.renedegroot.android.opengpstracker.exporter.R
 import nl.sogeti.android.gpstracker.integration.ContentConstants.Tracks
 import nl.sogeti.android.gpstracker.integration.ContentConstants.Tracks.CONTENT_URI
 import nl.sogeti.android.gpstracker.integration.ContentConstants.Waypoints
@@ -78,6 +79,8 @@ object exporterManager {
                     creator.executeOn(executor)
 
                 } while (tracks.moveToNext() && !shouldStop)
+            } else {
+                progressListener.showError("Finding tracks", context.getString(R.string.error_tracks_not_found), null);
             }
         } finally {
             tracks?.close()
@@ -159,7 +162,8 @@ object exporterManager {
         }
 
         override fun showError(task: String?, errorMessage: String?, exception: Exception?) {
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(context, "$task failed $errorMessage", Toast.LENGTH_SHORT).show()
             context = null
         }
     }

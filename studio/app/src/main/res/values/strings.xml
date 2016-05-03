@@ -52,5 +52,6 @@
     <string name="error_filename"> reason: Incorrect filename</string>
     <string name="error_buildxml"> reason: Error building XML</string>
     <string name="error_writefailed"> reason: Error writing to destination</string>
+    <string name="error_tracks_not_found"> reason: No tracks in the database</string>
 
 </resources>

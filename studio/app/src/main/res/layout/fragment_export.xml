@@ -52,102 +52,109 @@
         android:paddingRight="@dimen/activity_vertical_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:divider="@drawable/space_8dp_height"
-            app:showDividers="middle"
-            tools:context=".export.ExportFragment">
+            android:layout_above="@+id/fragment_export_nextStep"
+            android:layout_alignParentTop="true">
 
-            <TextView
-                android:id="@+id/fragment_export_explained"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This application can export all your Open GPS Tracker tracks to GPX files on Google Drive." />
-
-
-            <TextView
-                android:id="@+id/fragment_export_step1"
+            <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="@string/export_step1" />
+                android:orientation="vertical"
+                app:divider="@drawable/space_8dp_height"
+                app:showDividers="middle"
+                tools:context=".export.ExportFragment">
 
-            <CheckBox
-                android:id="@+id/fragment_export_ogt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{model.isTrackerConnected}"
-                android:enabled="@{!model.isTrackerConnected}"
-                android:onClick="@{(view) -> handlers.connectTracks(view)}"
-                android:text="@string/export_ogt_connected" />
-
-            <TextView
-                android:id="@+id/fragment_export_step2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="@string/export_step2" />
-
-            <CheckBox
-                android:id="@+id/fragment_export_drive"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{model.isDriveConnected}"
-                android:enabled="@{!model.isDriveConnected}"
-                android:onClick="@{(view) -> handlers.connectDrive(view)}"
-                android:text="@string/export_drive_connected" />
-
-            <TextView
-                android:id="@+id/fragment_export_step3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="@string/export_step3" />
-
-            <TextView
-                android:id="@+id/fragment_export_progress_tracks"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:text="@{@string/export_tracks(model.completedTracks, model.totalTracks)}"
-                android:textColor="@android:color/black"
-                android:visibility="@{model.isRunning || model.isFinished ? View.VISIBLE : View.GONE}"
-                tools:text="Tracks: 1 out of 12" />
-
-            <TextView
-                android:id="@+id/fragment_export_progress_waypoints"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="true"
-                android:paddingLeft="8dp"
-                android:text="@{@string/export_waypoints(model.completedWaypoints, model.totalWaypoints)}"
-                android:textColor="@android:color/black"
-                android:visibility="@{model.isRunning || model.isFinished ? View.VISIBLE : View.GONE}"
-                tools:text="Waypoints: 1 out of 34" />
-
-            <ProgressBar
-                android:id="@+id/fragment_export_progress_bar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:keepScreenOn="true"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}" />
+                <TextView
+                    android:id="@+id/fragment_export_explained"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="This application can export all your Open GPS Tracker tracks to GPX files on Google Drive." />
 
 
-            <CheckBox
-                android:id="@+id/fragment_export_done"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="@{model.isFinished}"
-                android:enabled="false"
-                android:text="@string/export_ogt_done" />
+                <TextView
+                    android:id="@+id/fragment_export_step1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="@string/export_step1" />
 
-        </android.support.v7.widget.LinearLayoutCompat>
+                <CheckBox
+                    android:id="@+id/fragment_export_ogt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{model.isTrackerConnected}"
+                    android:enabled="@{!model.isTrackerConnected}"
+                    android:onClick="@{(view) -> handlers.connectTracks(view)}"
+                    android:text="@string/export_ogt_connected" />
+
+                <TextView
+                    android:id="@+id/fragment_export_step2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="@string/export_step2" />
+
+                <CheckBox
+                    android:id="@+id/fragment_export_drive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{model.isDriveConnected}"
+                    android:enabled="@{!model.isDriveConnected}"
+                    android:onClick="@{(view) -> handlers.connectDrive(view)}"
+                    android:text="@string/export_drive_connected" />
+
+                <TextView
+                    android:id="@+id/fragment_export_step3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="@string/export_step3" />
+
+                <TextView
+                    android:id="@+id/fragment_export_progress_tracks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:text="@{@string/export_tracks(model.completedTracks, model.totalTracks)}"
+                    android:textColor="@android:color/black"
+                    android:visibility="@{model.isRunning || model.isFinished ? View.VISIBLE : View.GONE}"
+                    tools:text="Tracks: 1 out of 12" />
+
+                <TextView
+                    android:id="@+id/fragment_export_progress_waypoints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:paddingLeft="8dp"
+                    android:text="@{@string/export_waypoints(model.completedWaypoints, model.totalWaypoints)}"
+                    android:textColor="@android:color/black"
+                    android:visibility="@{model.isRunning || model.isFinished ? View.VISIBLE : View.GONE}"
+                    tools:text="Waypoints: 1 out of 34" />
+
+                <ProgressBar
+                    android:id="@+id/fragment_export_progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:keepScreenOn="true"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:visibility="@{model.isRunning ? View.VISIBLE : View.GONE}" />
+
+
+                <CheckBox
+                    android:id="@+id/fragment_export_done"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="@{model.isFinished}"
+                    android:enabled="false"
+                    android:text="@string/export_ogt_done" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+        </ScrollView>
 
         <Button
             android:id="@+id/fragment_export_nextStep"
