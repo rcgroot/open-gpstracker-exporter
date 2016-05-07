@@ -30,7 +30,7 @@
 <resources>
     <string name="action_about">Over</string>
     <string name="error_buildxml"></string>
-    <string name="export_explained">Deze app can alle opgenomen routes in Open GPS Tracker exporter naar GPX bestanden op Google Drive.</string>
+    <string name="export_explained">Deze app kan alle opgenomen routes in Open GPS Tracker exporter naar GPX bestanden op Google Drive.</string>
     <string name="export_drive_connected">Google Drive toegang verleend</string>
     <string name="export_ogt_connected">Route database toegang verleend</string>
     <string name="export_ogt_done">Route export voltooid</string>
