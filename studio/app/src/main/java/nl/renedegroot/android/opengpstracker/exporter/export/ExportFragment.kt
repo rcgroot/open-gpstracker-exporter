@@ -49,6 +49,11 @@ class ExportFragment : Fragment(), ExportHandlers.Listener {
     private var binding: FragmentExportBinding? = null
     private var model: ExportModel? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.retainInstance = true
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         var createdBinding = DataBindingUtil.inflate<FragmentExportBinding>(inflater, R.layout.fragment_export, container, false)
@@ -73,6 +78,11 @@ class ExportFragment : Fragment(), ExportHandlers.Listener {
     override fun onDestroyView() {
         model = null
         super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        exporterManager.stopExport()
+        super.onDestroy()
     }
 
     override fun startTracksConnect() {
