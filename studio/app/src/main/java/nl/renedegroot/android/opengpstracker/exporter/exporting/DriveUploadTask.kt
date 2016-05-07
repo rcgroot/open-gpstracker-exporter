@@ -40,6 +40,7 @@ import com.google.android.gms.drive.query.Query
 import com.google.android.gms.drive.query.SearchableField
 import nl.sogeti.android.gpstracker.actions.tasks.GpxCreator
 import nl.sogeti.android.gpstracker.actions.tasks.ProgressListener
+import nl.sogeti.android.log.Log
 
 /**
  * Async task that uses the GpxCreate URI to Stream capability to fill a Google Drive file with said stream
@@ -51,7 +52,7 @@ class DriveUploadTask(context: Context, trackUri: Uri, listener: ProgressListene
     private val FOLDER_MIME = "application/vnd.google-apps.folder"
 
     override fun doInBackground(vararg params: Void): Uri? {
-        // Step 1: Look for the export folder
+        Log.d(this, "Looking for export folder")
         val rootFolder = Drive.DriveApi.getRootFolder(driveApi);
         val query = Query.Builder()
                 .addFilter(Filters.eq(SearchableField.TITLE, FOLDER_NAME))
@@ -59,18 +60,33 @@ class DriveUploadTask(context: Context, trackUri: Uri, listener: ProgressListene
                 .build()
         val rootListResult = rootFolder.queryChildren(driveApi, query).await()
         processResult(rootListResult)
+        Log.d(this, "Searched for export folder $rootListResult")
         if (isCancelled) {
             return null
         }
 
-        // Step 2: Find or create the export folder
-        var didCreateFolder: Boolean
         val exportFolder: DriveFolder
+        var gpxListResult: DriveApi.MetadataBufferResult?
         if (rootListResult.metadataBuffer.count > 0) {
+            Log.d(this, "Found export folder")
             val folderId = rootListResult.metadataBuffer.get(0).driveId
             exportFolder = folderId.asDriveFolder()
-            didCreateFolder = false
+            Log.d(this, "Have export folder $exportFolder")
+
+            Log.d(this, "Looking for GPX file")
+            val fileQuery = Query.Builder()
+                    .addFilter(Filters.eq(SearchableField.TITLE, filename))
+                    .addFilter(Filters.eq(SearchableField.MIME_TYPE, mimeType))
+                    .build()
+            gpxListResult = exportFolder.queryChildren(driveApi, fileQuery).await()
+            processResult(gpxListResult)
+            Log.d(this, "Searched for GPX file $gpxListResult")
+            if (isCancelled) {
+                return null
+            }
         } else {
+            gpxListResult = null
+            Log.d(this, "Creating export folder")
             val metadata = MetadataChangeSet.Builder()
                     .setTitle(FOLDER_NAME)
                     .build();
@@ -80,36 +96,24 @@ class DriveUploadTask(context: Context, trackUri: Uri, listener: ProgressListene
                 return null
             }
             exportFolder = createFolderResult.driveFolder
-            didCreateFolder = true
+            Log.d(this, "Created export folder $exportFolder")
         }
         rootListResult.metadataBuffer.release()
 
-        // Step 3: Search for an existing file
-        var queryListResult: DriveApi.MetadataBufferResult? = null
-        if (!didCreateFolder) {
-            val fileQuery = Query.Builder()
-                    .addFilter(Filters.eq(SearchableField.TITLE, filename))
-                    .addFilter(Filters.eq(SearchableField.MIME_TYPE, mimeType))
-                    .build()
-            queryListResult = exportFolder.queryChildren(driveApi, fileQuery).await()
-            processResult(queryListResult)
-            if (isCancelled) {
-                return null
-            }
-        }
 
-        if (queryListResult == null || queryListResult.metadataBuffer.count == 0) {
-            // Step 4b: Create new file
+        if (gpxListResult == null || gpxListResult.metadataBuffer.count == 0) {
+            Log.d(this, "Creating GPX content")
             val driveContentsResult = Drive.DriveApi.newDriveContents(driveApi).await();
             processResult(driveContentsResult)
             if (isCancelled) {
                 return null
             }
-            // Step 5b: Write GPX to new content
             super.exportGpx(driveContentsResult.driveContents.outputStream)
             if (isCancelled) {
                 return null
             }
+            Log.d(this, "Created GPX content $driveContentsResult")
+            Log.d(this, "Creating GPX file")
             val metadata = MetadataChangeSet.Builder()
                     .setTitle(filename)
                     .setMimeType(mimeType)
@@ -119,18 +123,22 @@ class DriveUploadTask(context: Context, trackUri: Uri, listener: ProgressListene
             if (isCancelled) {
                 return null
             }
+            Log.d(this, "Creating GPX file $fileResult")
         } else {
-            // Step 4a: Open existing file and overwrite content with GPX data
-            val fileId = queryListResult.metadataBuffer.get(0).driveId
+            Log.d(this, "Found gpx file $gpxListResult")
+            val fileId = gpxListResult.metadataBuffer.get(0).driveId
             val exportFile = fileId.asDriveFile()
             val openFile = exportFile.open(driveApi, DriveFile.MODE_WRITE_ONLY, null).await()
-            // Step 5a: Write GPX to existing content
+            gpxListResult.metadataBuffer.release()
+            Log.d(this, "Have gpx file $openFile")
+            Log.d(this, "Overwrite GPX content")
             super.exportGpx(openFile.driveContents.outputStream)
             val writeResult = openFile.driveContents.commit(driveApi, null).await()
             processResult(writeResult)
             if (isCancelled) {
                 return null
             }
+            Log.d(this, "Overwriten GPX content $writeResult")
         }
 
         return null
