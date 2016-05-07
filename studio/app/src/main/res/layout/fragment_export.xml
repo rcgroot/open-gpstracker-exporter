@@ -70,7 +70,7 @@
                     android:id="@+id/fragment_export_explained"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="This application can export all your Open GPS Tracker tracks to GPX files on Google Drive." />
+                    android:text="@string/export_explained" />
 
 
                 <TextView
